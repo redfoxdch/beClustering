@@ -153,6 +153,10 @@ def best_map(L1,L2):
     return newL2   
 
 def err_rate(gt_s, s):
+    if max(gt_s)-min(gt_s) < max(s) -min(s):
+	tmp = gt_s
+	gt_s = s
+	s = tmp
     c_x = best_map(gt_s,s)
     err_x = np.sum(gt_s[:] != c_x[:])
     missrate = err_x.astype(float) / (gt_s.shape[0])
