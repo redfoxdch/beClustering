@@ -6,8 +6,6 @@ import input
 import scipy.io as sio
 import bec
 import draw
-import bclustering
-import beclustering
 from sklearn import cluster
 from evaluate import err_rate
 import matplotlib.pyplot as plt
@@ -47,11 +45,12 @@ def demo(filename, thres):
 
 
 	a = thres
-	nb,rnb = input.getNeighbor(distances,a)
+	nb,rnb = bec.getNeighbor(distances,a)
 
-	labels,centers = bec.beclustering(distances,a,5, 5)
+	labels,centers = bec.beclustering(distances,a,8, 5)
 
-	level = bec.levelConstructionFast(rnb)
+	level = bec.levelConstructionFast(rnb,nb)
+	#level = bec.levelConstruction(rnb)
 	#draw.demo(level, rnb, data)
 	fig,ax=plt.subplots()
 	data = np.array(data)
@@ -118,7 +117,7 @@ def demo2(filename, thres):
 	a = thres
 	nb,rnb = input.getNeighbor(distances,a)
 
-	labels,centers = bec.beclustering(distances,a,5, 5)
+	labels,centers = bec.beclustering(distances,a,10, 15)
 
 	level = bec.levelConstructionFast(rnb)
 	#draw.demo(level, rnb, data)
@@ -130,12 +129,9 @@ def demo2(filename, thres):
 	rneighbor = [[] for x in range(length)]
 	density = [0 for x in range(length)]
 
-	for i,li in enumerate(rnb):
-		for id in li:
-			density[i] += 1
 
 	for i in range(len(level)):
-		ax.text(data[i][0],data[i][1],"%i %i"%(level[i],density[i]))
+		ax.text(data[i][0],data[i][1],"%i"%(level[i]))
 	plt.show()
 	labels,centers = beclustering.beClustering(rnb,nb)
 	#labels,centers = bclustering.erosionCLustering(nb,rnb)
@@ -154,12 +150,14 @@ def demo2(filename, thres):
 	print 'error rate ',eat
 
 if __name__ == '__main__':
-	demo2('jain.txt',3.8)
-	demo('Aggregation.txt',1.5)
-	demo('flame.txt',1.5)
-	demo('jain.txt',3.8)
-	demo('pathbased.txt',2.5)
-	demo('sparil.txt',1.4)
-	demo('s3.txt',40000)
+	
+	#demo('Aggregation.txt',2.1)
+	#demo('flame.txt',2.3)
+	demo('jain.txt',3.7)
+	#demo('pathbased.txt',2.5)
+	#demo('sparil.txt',2.5)
+	#demo('s3.txt',40000)
+
+	#demo2('jain.txt',3.8)
 	
 
